@@ -14,11 +14,17 @@ namespace Journal
             // Define an array of prompts to use when writing a new journal entry.
             string[] prompts = new string[]
             {
+                "What are you most proud of yourself for and why?",
                 "Who was the most interesting person I interacted with today?",
+                "What are you grateful for today and why?",
                 "What was the best part of my day?",
+                "How do you feel about your current goals and progress?",
                 "How did I see the hand of the Lord in my life today?",
                 "What was the strongest emotion I felt today?",
-                "If I had one thing I could do over today, what would it be?"
+                "Write a letter to your future self or your past self.",
+                "What are some of your favorite memories or experiences?",
+                "If I had one thing I could do over today, what would it be?",
+                "What is one thing you can do tomorrow to make it a better day than today?"
             };
 
             // Create a Random object to use when selecting a random prompt.
