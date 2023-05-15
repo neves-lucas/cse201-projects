@@ -7,62 +7,57 @@ namespace Journal
     // The Journal class manages a list of journal entries.
     public class Journal
     {
-        // The entries field holds the list of entries.
-        private List<Entry> entries;
+        // The _entries field holds a list of Entry objects representing this journal's entries.
+        private List<Entry> _entries;
 
-        // The fileName field holds the name of the file used to save and load entries.
-        private string fileName;
-
-        // The constructor initializes the entries and fileName fields and loads any existing entries from the file.
-        public Journal(string fileName)
+        // The constructor initializes an empty list of entries.
+        public Journal()
         {
-            this.fileName = fileName;
-            entries = new List<Entry>();
-            LoadEntries();
+            _entries = new List<Entry>();
         }
 
-        // The AddEntry method adds a new entry to the list and saves the entries to the file.
-        public void AddEntry(Entry entry)
-        {
-            entries.Add(entry);
-            SaveEntries();
-        }
+        // The AddEntry method adds a new entry to this journal's list of entries.
+ public void AddEntry(Entry entry)
+ {
+ _entries.Add(entry);
+ }
 
-        // The DisplayEntries method displays all entries in the list.
-        public void DisplayEntries()
-        {
-            foreach (Entry entry in entries)
-            {
-                Console.WriteLine(entry);
-            }
-        }
+ // The DisplayEntries method displays all of this journal's entries to the console.
+ public void DisplayEntries()
+ {
+ foreach (Entry entry in _entries)
+ {
+ Console.WriteLine(entry);
+ }
+ }
 
-        // The LoadEntries method clears the list of entries and loads any existing entries from the file into the list.
-        public void LoadEntries()
-        {
-            entries.Clear();
-            if (File.Exists(fileName))
-            {
-                string[] lines = File.ReadAllLines(fileName);
-                foreach (string line in lines)
-                {
-                    string[] parts = line.Split(new[] { ": " }, StringSplitOptions.None);
-                    DateTime date = DateTime.Parse(parts[0]);
-                    string text = parts[1];
-                    entries.Add(new Entry(text) { Date = date });
-                }
-            }
-        }
+ // The LoadEntries method clears this journal's list of entries and loads any existing entries from the specified file into this list.
+ public void LoadEntries(string fileName)
+ {
+ _entries.Clear();
+ if (File.Exists(fileName))
+ {
+ string[] lines = File.ReadAllLines(fileName);
+ foreach (string line in lines)
+ {
+ string[] parts = line.Split(new[] { ": ", " - " }, StringSplitOptions.None);
+ DateTime date = DateTime.Parse(parts[0]);
+ string prompt = parts[1];
+ string text = parts[2];
+ _entries.Add(new Entry(text, prompt) { Date = date });
+ }
+ }
+ }
 
-        // The SaveEntries method saves all entries in the list to the file.
-        public void SaveEntries()
-        {
-            List<string> lines = new List<string>();
-            foreach (Entry entry in entries)
-            {
-                lines.Add(entry.ToString());
-            }
-            File.WriteAllLines(fileName, lines);
-        }
-    }
+ // The SaveEntries method saves all of this journal's entries to the specified file. Each entry is saved on its own line using its ToString representation. If any existing file with this name is overwritten. 
+ public void SaveEntries(string fileName)
+ {
+ List<string> lines = new List<string>();
+ foreach (Entry entry in _entries)
+ {
+ lines.Add(entry.ToString());
+ }
+ File.WriteAllLines(fileName, lines);
+ }
+ }
 }

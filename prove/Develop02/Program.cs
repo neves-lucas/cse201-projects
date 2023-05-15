@@ -5,34 +5,17 @@ namespace Journal
     // The Program class contains the Main method that runs when the program starts.
     class Program
     {
+        // The Main method is the entry point for the program.
         static void Main(string[] args)
         {
             // Display a welcome message and create a new Journal object.
             Console.WriteLine("Welcome to your journal!");
-            Journal journal = new Journal("journal.txt");
-
-            // Define an array of prompts to use when writing a new journal entry.
-            string[] prompts = new string[]
-            {
-                "What are you most proud of yourself for and why?",
-                "Who was the most interesting person I interacted with today?",
-                "What are you grateful for today and why?",
-                "What was the best part of my day?",
-                "How do you feel about your current goals and progress?",
-                "How did I see the hand of the Lord in my life today?",
-                "What was the strongest emotion I felt today?",
-                "Write a letter to your future self or your past self.",
-                "What are some of your favorite memories or experiences?",
-                "If I had one thing I could do over today, what would it be?",
-                "What is one thing you can do tomorrow to make it a better day than today?"
-            };
-
-            // Create a Random object to use when selecting a random prompt.
-            Random random = new Random();
+            Journal journal = new Journal();
 
             // Set quit to false to start the menu loop.
             bool quit = false;
-            
+
+            // Loop until the user chooses to quit.
             while (!quit)
             {
                 // Display the menu options.
@@ -54,15 +37,14 @@ namespace Journal
                         // Write a new journal entry.
 
                         // Select a random prompt and display it to the user.
-                        int promptIndex = random.Next(prompts.Length);
-                        string prompt = prompts[promptIndex];
+                        string prompt = Entry.GetRandomPrompt();
                         Console.WriteLine(prompt);
 
-                        // Read in the user's response and create a new Entry object with their response as its text.
+                        // Read in the user's response and create a new Entry object with their response as its text and the selected prompt as its prompt.
                         string text = Console.ReadLine();
-                        Entry entry = new Entry(text);
+                        Entry entry = new Entry(text, prompt);
 
-                        // Add the new entry to the journal and save it to file.
+                        // Add the new entry to the journal.
                         journal.AddEntry(entry);
                         break;
                     case "2":
@@ -73,12 +55,22 @@ namespace Journal
                     case "3":
                         // Save all journal entries to file.
 
-                        journal.SaveEntries();
+                        // Prompt for and read in the file name to save to.
+                        Console.Write("Enter the file name to save to: ");
+                        string saveFileName = Console.ReadLine();
+
+                        // Save all entries in the journal to the specified file.
+                        journal.SaveEntries(saveFileName);
                         break;
                     case "4":
                         // Load all journal entries from file.
 
-                        journal.LoadEntries();
+                        // Prompt for and read in the file name to load from.
+                        Console.Write("Enter the file name to load from: ");
+                        string loadFileName = Console.ReadLine();
+
+                        // Load all entries in the journal from the specified file.
+                        journal.LoadEntries(loadFileName);
                         break;
                     case "5":
                         // Quit the program.
