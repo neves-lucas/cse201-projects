@@ -4,23 +4,23 @@ using System.Linq;
 
 namespace ScriptureMemorizer
 {
-    // A class to represent a word in the scripture text
+    // A class to represent a word in the scripture text 
     class ScriptureWord
     {
-        // The word itself, such as "God" or "love"
-        public string _word { get; private set; }
+        // The word itself, such as "God" or "love" 
+        private string _word;
 
-        // A boolean flag to indicate if the word is hidden or not
-        public bool _isHidden { get; set; }
+        // A boolean flag to indicate if the word is hidden or not 
+        private bool _isHidden;
 
-        // A constructor to create a new word with the given word and hidden status
-        public ScriptureWord(string word, bool isHidden)
+        // A constructor to create a new word with the given word and visible status 
+        public ScriptureWord(string word)
         {
             _word = word;
-            _isHidden = isHidden;
+            _isHidden = false; // By default, words are visible
         }
 
-        // A method to return the string representation of the word
+        // A method to return the string representation of the word 
         public override string ToString()
         {
             if (_isHidden) // Return an underscore for hidden words
@@ -31,6 +31,18 @@ namespace ScriptureMemorizer
             {
                 return _word;
             }
+        }
+
+        // A method to check if the word is hidden or not 
+        public bool IsHidden()
+        {
+            return _isHidden;
+        }
+
+        // A method to hide the word 
+        public void Hide()
+        {
+            _isHidden = true;
         }
     }
 }

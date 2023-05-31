@@ -4,16 +4,16 @@ namespace ScriptureMemorizer
     class ScriptureReference
     {
         // The book name, such as "John" or "Proverbs"
-        public string _book { get; private set; }
+        private string _book;
 
         // The chapter number, such as 3
-        public int _chapter { get; private set; }
+        private int _chapter;
 
         // The starting verse number, such as 16 or 5
-        public int _startVerse { get; private set; }
+        private int _startVerse;
 
         // The ending verse number, such as 6 or -1 if there is no range
-        public int _endVerse { get; private set; }
+        private int _endVerse;
 
         // A constructor for a single verse reference, such as "John 3:16"
         public ScriptureReference(string book, int chapter, int verse)
