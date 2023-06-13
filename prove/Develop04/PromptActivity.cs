@@ -10,7 +10,7 @@ namespace MindfulnessProgram
         private List<string> _promptList;
 
         // This is a constructor that takes the description and the list of prompts as parameters and sets them to the member variables
-        public PromptActivity(string description, List<string> promptList) : base(description)
+        public PromptActivity(string name, string description, List<string> promptList) : base(name, description)
         {
             _promptList = promptList;
         }

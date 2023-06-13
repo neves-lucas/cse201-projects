@@ -7,12 +7,12 @@ namespace MindfulnessProgram
     public class ReflectionActivity : PromptActivity
     {
         // This is a constructor that calls the base constructor with the description and the list of prompts
-        public ReflectionActivity() : base("reflect on times in your life when you have shown strength and resilience", new List<string>
+        public ReflectionActivity() : base("Reflection", "reflect on times in your life when you have shown strength and resilience", new List<string>
         {
-            "Think of a time when you stood up for someone else.",
-            "Think of a time when you did something really difficult.",
-            "Think of a time when you helped someone in need.",
-            "Think of a time when you did something truly selfless."
+            "--- Think of a time when you stood up for someone else. ---",
+            "--- Think of a time when you did something really difficult. ---",
+            "--- Think of a time when you helped someone in need. ---",
+            "--- Think of a time when you did something truly selfless. ---"
         })
         {
         }
@@ -33,8 +33,11 @@ namespace MindfulnessProgram
             while (elapsed < duration)
             {
                 // Display a new prompt and pause for 10 seconds
+                Console.WriteLine();
+                Console.WriteLine("Consider the following prompt: ");
                 NewPrompt();
-                Pause(10);
+                Console.WriteLine("When you have something in mind, press enter to continue. ");
+                Console.ReadLine();
                 Console.WriteLine();
 
                 // Increment the elapsed time by 10 seconds

@@ -6,7 +6,7 @@ namespace MindfulnessProgram
     public class BreathingActivity : Activity
     {
         // This is a constructor that calls the base constructor with the description
-        public BreathingActivity() : base("Breathing")
+        public BreathingActivity() : base("Breathing", "This activity will help you relax by controlling your breath")
         {
         }
 

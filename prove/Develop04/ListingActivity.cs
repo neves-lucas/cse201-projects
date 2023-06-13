@@ -10,7 +10,7 @@ namespace MindfulnessProgram
         private int _count;
 
         // This is a constructor that calls the base constructor with the description and the list of prompts
-        public ListingActivity() : base("reflect on the good things in your life by having you list as many things as you can in a certain area", new List<string>
+        public ListingActivity() : base("Listing", "This activity will help you reflect on the good things in your life by having you list as many things as you can in a certain area", new List<string>
         {
             "Who are people that you appreciate?",
             "What are personal strengths of yours?",
@@ -37,14 +37,13 @@ namespace MindfulnessProgram
 
             // Display a new prompt and pause for 5 seconds
             NewPrompt();
-            Pause(5);
             Console.WriteLine();
 
             // Loop until the current time minus the start time reaches the duration
             while ((DateTime.Now - start).TotalSeconds < duration)
             {
                 // Prompt the user to enter an item and increment the count
-                Console.WriteLine("Enter an item:");
+                Console.WriteLine("> ");
                 string item = Console.ReadLine();
                 _count++;
             }

@@ -9,12 +9,16 @@ namespace MindfulnessProgram
         // This is a private member variable to store the duration of the activity in seconds
         private int _duration;
 
-        // This is a private member variable to store the description of the activity
+        // Member variables for name and description.
+
+        private string _name;
         private string _description;
 
-        // This is a constructor that takes the description as a parameter and sets it to the member variable
-        public Activity(string description)
+
+        // This is a constructor that takes the name and description as parameters and sets them to the member variables
+        public Activity(string name, string description)
         {
+            _name = name;
             _description = description;
         }
 
@@ -38,7 +42,8 @@ namespace MindfulnessProgram
         // This is a method to display the starting message for the activity
         public void StartMessage()
         {
-            Console.WriteLine($"Welcome to the {_description} activity.");
+            Console.WriteLine($"Welcome to the {_name} activity.");
+            Console.WriteLine();
             Console.WriteLine("This activity will help you " + _description + ".");
             SetDuration();
             Console.WriteLine("Please prepare to begin.");
@@ -49,7 +54,7 @@ namespace MindfulnessProgram
         public void EndMessage()
         {
             Console.WriteLine("You did a great job!");
-            Console.WriteLine($"You have completed the {_description} activity for {GetDuration()} seconds.");
+            Console.WriteLine($"You have completed the {_name} activity for {GetDuration()} seconds.");
             Pause(4);
         }
 
