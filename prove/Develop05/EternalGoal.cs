@@ -23,7 +23,7 @@ namespace GoalTracker
          }
 
          // This is an override method that returns a string representation of the goal with an infinity symbol 
-         public override string ToString()
+         public new string ToString()
          {
              return "[∞] " + base.ToString(); // Add an infinity symbol before the base string representation 
          }

@@ -24,7 +24,8 @@ namespace GoalTracker
                     writer.WriteLine(score);
                     foreach (Goal goal in goals)
                     {
-                        writer.WriteLine(goal.GetType().Name + "," + goal.GetName() + "," + goal.GetValue() + "," + goal.GetCompleted());
+                        // Removed the completed field from the output as it is not needed for loading the goals
+                        writer.WriteLine(goal.GetType().Name + "," + goal.GetName() + "," + goal.GetValue());
                         if (goal is ChecklistGoal)
                         {
                             ChecklistGoal checklistGoal = (ChecklistGoal)goal;

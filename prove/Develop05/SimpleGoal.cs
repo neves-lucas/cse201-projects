@@ -29,16 +29,16 @@ namespace GoalTracker
         }
 
         // This is an override method that returns a string representation of the goal with a check mark if it is completed
-        public override string ToString()
-        {
-            if (GetCompleted()) // If the goal is completed
-            {
-                return "[X] " + base.ToString(); // Add a check mark before the base string representation
-            }
-            else // If the goal is not completed
-            {
-                return "[ ] " + base.ToString(); // Add an empty box before the base string representation
-            }
+        public new string ToString()
+         {
+             if (GetCompleted()) // If the goal is completed 
+             {
+                 return "[X] " + base.ToString(); // Add a check mark before the base string representation 
+             }
+             else // If the goal is not completed 
+             {
+                 return "[ ] " + base.ToString(); // Add an empty box before the base string representation 
+             }
             
         }
     }

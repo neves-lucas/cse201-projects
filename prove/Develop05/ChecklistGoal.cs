@@ -74,7 +74,7 @@ namespace GoalTracker
         }
 
          // This is an override method that returns a string representation of the goal with a check mark if it is completed and the current count and times 
-         public override string ToString()
+         public new string ToString()
          {
              if (GetCompleted()) // If the goal is completed
              {

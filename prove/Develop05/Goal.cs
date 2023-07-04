@@ -61,15 +61,13 @@ namespace GoalTracker
             SetCompleted(false); // By default, the goal is not completed
         }
 
-        // This is an abstract method that must be overridden by the derived classes
         // It takes the user's score as a parameter and returns the updated score after recording an event
         public abstract int RecordEvent(int score);
 
-        // This is a virtual method that can be overridden by the derived classes
-        // It returns a string representation of the goal
-        public virtual string ToString()
+        // This is a method that returns a string representation of the goal
+        public new string ToString()
         {
-            return GetName() + " (" + GetDescription() + ") ";
+            return GetName() + " (" + GetValue() + " points)";
         }
     }
 }
