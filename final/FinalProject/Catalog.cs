@@ -1,65 +1,143 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LibraryManagementSystem
 {
-    // A class that represents a catalog of items in the library
     public class Catalog
     {
         // Field
-        private List<Item> items; // A list of items in the catalog
+        private List<Item> _items;
+        private List<User> _users;
 
-        // Property
-        public List<Item> Items // Gets or sets the list of items in the catalog
+        public List<Item> GetItems()
         {
-            get { return items; }
-            set { items = value; }
+            return _items;
         }
 
-        // Methods
-        public void DisplayItems() // Displays all the items in the catalog with their descriptions and statuses
+        public void SetItems(List<Item> items)
+        {
+            _items = items;
+        }
+
+        public List<User> GetUsers()
+        {
+            return _users;
+        }
+
+        public void SetUsers(List<User> users)
+        {
+            _users = users;
+        }
+
+        public void DisplayItems()
         {
             Console.WriteLine("Items in the catalog:");
-            foreach (Item item in items)
+            Console.WriteLine();
+            foreach (Item item in GetItems())
             {
                 Console.WriteLine(item.GetDescription());
                 Console.WriteLine();
             }
         }
-
-        public Item SearchItem(string title) // Searches for an item in the catalog by its title and returns it if found, otherwise returns null
+        public User SearchUser(string query)
         {
-            foreach (Item item in items)
+            int id;
+            if (int.TryParse(query, out id))
             {
-                if (item.Title.Equals(title, StringComparison.OrdinalIgnoreCase))
+                foreach (User user in GetUsers())
                 {
-                    return item;
+                    if (user.GetId() == id)
+                    {
+                        return user;
+                    }
+                }
+            }
+            else
+            {
+                foreach (User user in GetUsers())
+                {
+                    if (user.GetName().Equals(query, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return user;
+                    }
                 }
             }
             return null;
         }
 
-        public void BorrowItem(Item item, User user) // Borrows an item from the catalog by changing its status to false and creating a new borrowing record with a due date. Also checks if the user has any fines and asks them to pay them before borrowing. If the item is not available, prints a message to inform the user. If the item is not found, prints a message to inform the user. If the user is not found, prints a message to inform the user. If there is any other error, prints a message to inform the user.
+        public Item SearchItem(string query)
+    {
+        int id;
+        if (int.TryParse(query, out id))
+        {
+            foreach (Item item in GetItems())
+            {
+                if (item.GetId() == id)
+                {
+                    return item;
+                }
+            }
+        }
+        else
+        {
+            foreach (Item item in GetItems())
+            {
+                if (item.GetTitle().Equals(query, StringComparison.OrdinalIgnoreCase))
+                {
+                    return item;
+                }
+            }
+        }
+        return null;
+    }
+        
+        public List<Item> SearchByAuthorOrDirector(string name)
+        {
+            List<Item> results = new List<Item>();
+            foreach (Item item in GetItems())
+            {
+                if (item is Book)
+                {
+                    Book book = (Book)item;
+                    if (book.GetAuthor().Equals(name, StringComparison.OrdinalIgnoreCase))
+                    {
+                        results.Add(book);
+                    }
+                }
+                else if (item is DVD)
+                {
+                    DVD dvd = (DVD)item;
+                    if (dvd.GetDirector().Equals(name, StringComparison.OrdinalIgnoreCase))
+                    {
+                        results.Add(dvd);
+                    }
+                }
+            }
+            return results;
+        }
+
+        public bool BorrowItem(Item item, User user)
         {
             try
             {
                 if (item != null && user != null)
                 {
-                    if (item.Status == true)
+                    if (item.GetStatus() == true)
                     {
-                        // TODO: Add some logic to check if the user has any fines and ask them to pay them before borrowing.
                         item.Borrow();
-                        DateTime dueDate = DateTime.Now.AddDays(14); // The due date is 14 days from now
-                        Borrowing borrowing = new Borrowing(); // Create a new borrowing record
-                        borrowing.ItemId = item.Id;
-                        borrowing.UserId = user.Id;
-                        borrowing.DueDate = dueDate;
-                        // TODO: Add some logic to store the borrowing record in a database or a file.
-                        Console.WriteLine($"The due date for {item.Title} is {dueDate.ToShortDateString()}.");
+                        DateTime dueDate = DateTime.Now.AddDays(14);
+                        Borrowing borrowing = new Borrowing();
+                        borrowing.SetItemId(item.GetId());
+                        borrowing.SetUserId(user.GetId());
+                        borrowing.SetDueDate(dueDate);
+                        Console.WriteLine($"The due date for {item.GetTitle} is {dueDate.ToShortDateString}.");
+                        return true;
                     }
                     else
                     {
-                        Console.WriteLine($"{item.Title} is not available.");
+                        Console.WriteLine($"{item.GetTitle} is not available.");
+                        return false;
                     }
                 }
                 else
@@ -72,32 +150,31 @@ namespace LibraryManagementSystem
                     {
                         Console.WriteLine("The user is not found.");
                     }
+                    return false;
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine($"An error occurred: {e.Message}");
+                return false;
             }
         }
 
-        public void ReturnItem(Item item, User user) // Returns an item to the catalog by changing its status to true and deleting the borrowing record. Also checks if the user has any fines and asks them to pay them before returning. If the item is not borrowed by the user, prints a message to inform the user. If the item is not found, prints a message to inform the user. If the user is not found, prints a message to inform the user. If there is any other error, prints a message to inform the user.
+        public void ReturnItem(Item item, User user)
         {
             try
             {
                 if (item != null && user != null)
                 {
-                    // TODO: Add some logic to find the borrowing record that matches the item and the user in a database or a file.
-                    Borrowing borrowing = null; // This is just a placeholder, you should replace it with the actual borrowing record.
+                    Borrowing borrowing = null;
                     if (borrowing != null)
                     {
                         item.Return();
-                        // TODO: Add some logic to delete the borrowing record from the database or the file.
-                        // TODO: Add some logic to check if the user has any fines and ask them to pay them before returning.
-                        Console.WriteLine($"You have returned {item.Title}.");
+                        Console.WriteLine($"You have returned {item.GetTitle}.");
                     }
                     else
                     {
-                        Console.WriteLine($"{item.Title} is not borrowed by you.");
+                        Console.WriteLine($"{item.GetTitle} is not borrowed by you.");
                     }
                 }
                 else

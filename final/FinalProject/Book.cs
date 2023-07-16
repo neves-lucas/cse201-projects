@@ -2,42 +2,45 @@ using System;
 
 namespace LibraryManagementSystem
 {
-    // A class that represents a book in the library
     public class Book : Item
     {
-        // Fields
-        private string author; // The name of the author of the book
-        private string isbn; // The ISBN of the book
-
-        // Properties
-        public string Author // Gets or sets the name of the author of the book
+        private string _author;
+        private string _isbn;
+        public string GetAuthor()
         {
-            get { return author; }
-            set { author = value; }
+            return _author;
         }
 
-        public string Isbn // Gets or sets the ISBN of the book
+        public void SetAuthor(string author)
         {
-            get { return isbn; }
-            set { isbn = value; }
+            _author = author;
+        }
+ 
+        public string GetIsbn()
+        {
+            return _isbn;
         }
 
-        // Methods
-        public override string GetDescription() // Returns a string with information about the book's title, author, ISBN, etc.
+        public void SetIsbn(string isbn)
         {
-            return $"Book: {Title}\nAuthor: {Author}\nISBN: {Isbn}\nStatus: {(Status ? "Available" : "Borrowed")}";
+            _isbn = isbn;
         }
 
-        public override void Borrow() // Changes the status of the book to false and prints a message to confirm the borrowing.
+        public override string GetDescription()
         {
-            Status = false;
-            Console.WriteLine($"You have borrowed {Title} by {Author}.");
+            return $"Book: {GetTitle()}\nAuthor: {GetAuthor()}\nISBN: {GetIsbn()}\nStatus: {(GetStatus() ? "Available" : "Borrowed")}";
         }
 
-        public override void Return() // Changes the status of the book to true and prints a message to confirm the return.
+        public override void Borrow()
         {
-            Status = true;
-            Console.WriteLine($"You have returned {Title} by {Author}.");
+            SetStatus(false);
+            Console.WriteLine($"You have borrowed {GetTitle()} by {GetAuthor()}.");
+        }
+
+        public override void Return()
+        {
+            SetStatus(true);
+            Console.WriteLine($"You have returned {GetTitle()} by {GetAuthor()}.");
         }
     }
 }

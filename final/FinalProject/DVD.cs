@@ -2,43 +2,45 @@ using System;
 
 namespace LibraryManagementSystem
 {
-    // A class that represents a DVD in the library
     public class DVD : Item
     {
-        // Fields
-        private string director; // The name of the director of the DVD
-        private string[] actors; // An array of names of the actors in the DVD
-
-        // Properties
-        public string Director // Gets or sets the name of the director of the DVD
-        {
-            get { return director; }
-            set { director = value; }
-        }
-
-        public string[] Actors // Gets or sets the array of names of the actors in the DVD
-        {
-            get { return actors; }
-            set { actors = value; }
-        }
+        private string _director;
+        private string[] _actors;
 
         // Methods
-        public override string GetDescription() // Returns a string with information about
-                                                // the DVD's title, director, actors, etc.
+        public string GetDirector()
         {
-            return $"DVD: {Title}\nDirector: {Director}\nActors: {string.Join(", ", Actors)}\nStatus: {(Status ? "Available" : "Borrowed")}";
+            return _director;
+        }
+        public void SetDirector(string director)
+        {
+            _director = director;
+        }
+        public string[] GetActors()
+        {
+            return _actors;
+        }
+        public void SetActors(string[] actors)
+        {
+            _actors = actors;
         }
 
-        public override void Borrow() // Changes the status of the DVD to false and prints a message to confirm the borrowing.
+        public override string GetDescription()
+
         {
-            Status = false;
-            Console.WriteLine($"You have borrowed {Title} by {Director}.");
+            return $"DVD: {GetTitle()}\nDirector: {GetDirector()}\nActors: {string.Join(", ", GetActors())}\nStatus: {(GetStatus() ? "Available" : "Borrowed")}";
         }
 
-        public override void Return() // Changes the status of the DVD to true and prints a message to confirm the return.
+        public override void Borrow()
         {
-            Status = true;
-            Console.WriteLine($"You have returned {Title} by {Director}.");
+            SetStatus(false);
+            Console.WriteLine($"You have borrowed {GetTitle()} by {GetDirector()}.");
+        }
+
+        public override void Return()
+        {
+            SetStatus(true);
+            Console.WriteLine($"You have returned {GetTitle()} by {GetDirector()}.");
         }
     }
 }

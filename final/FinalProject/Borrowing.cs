@@ -2,45 +2,55 @@ using System;
 
 namespace LibraryManagementSystem
 {
-    // A class that represents a borrowing transaction in the library
     public class Borrowing
     {
-        // Fields
-        private int id; // The ID of the borrowing transaction
-        private int itemId; // The ID of the item that is borrowed
-        private int userId; // The ID of the user who borrows the item
-        private DateTime dueDate; // The due date of the borrowing transaction
+        private int _id;
+        private int _itemId;
+        private int _userId;
+        private DateTime _dueDate;
 
-        // Properties
-        public int Id // Gets or sets the ID of the borrowing transaction
+        public int GetId()
         {
-            get { return id; }
-            set { id = value; }
+            return _id;
         }
 
-        public int ItemId // Gets or sets the ID of the item that is borrowed
+        public void SetId(int id)
         {
-            get { return itemId; }
-            set { itemId = value; }
+            _id = id;
         }
 
-        public int UserId // Gets or sets the ID of the user who borrows the item
+        public int GetItemId()
         {
-            get { return userId; }
-            set { userId = value; }
+            return _itemId;
         }
 
-        public DateTime DueDate // Gets or sets the due date of the borrowing transaction
+        public void SetItemId(int itemId)
         {
-            get { return dueDate; }
-            set { dueDate = value; }
+            _itemId = itemId;
         }
 
-        // Methods
-        public new string ToString() // Returns a string with information about 
-                                 // the borrowing transaction's ID, item ID, user ID, due date, etc.
+        public int GetUserId()
         {
-            return $"Borrowing: {Id}\nItem ID: {ItemId}\nUser ID: {UserId}\nDue Date: {DueDate.ToShortDateString()}";
+            return _userId;
+        }
+
+        public void SetUserId(int userId)
+        {
+            _userId = userId;
+        }
+
+        public DateTime GetDueDate()
+        {
+            return _dueDate;
+        }
+        public void SetDueDate(DateTime dueDate)
+        {
+            _dueDate = dueDate;
+        }
+
+        public new string ToString()
+        {
+            return $"Borrowing: {GetId()}\nItem ID: {GetItemId()}\nUser ID: {GetUserId()}\nDue Date: {GetDueDate().ToShortDateString()}";
         }
     }
 }

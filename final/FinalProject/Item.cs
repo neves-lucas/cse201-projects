@@ -2,36 +2,69 @@ using System;
 
 namespace LibraryManagementSystem
 {
-    // An abstract base class that represents an item in the library
     public abstract class Item
     {
-        // Fields
-        private int id; // The ID of the item
-        private string title; // The title of the item
-        private bool status; // The status of the item (true for available, false for borrowed)
+        private int _id;
+        private string _title;
+        private bool _status;
+        private string _author;
+        private string _publisher;
+        private int _year;
 
-        // Properties
-        public int Id // Gets or sets the ID of the item
+        public int GetId()
         {
-            get { return id; }
-            set { id = value; }
+            return _id;
+        }
+        public void SetId(int id)
+        {
+            _id = id;
+        }
+        public string GetTitle()
+        {
+            return _title;
+        }
+        public void SetTitle(string title)
+        {
+            _title = title;
+        }
+        public bool GetStatus()
+        {
+            return _status;
+        }
+        public void SetStatus(bool status)
+        {
+            _status = status;
         }
 
-        public string Title // Gets or sets the title of the item
+        public string GetAuthor()
         {
-            get { return title; }
-            set { title = value; }
+            return _author;
+        }
+        public void SetAuthor(string author)
+        {
+            _author = author;
         }
 
-        public bool Status // Gets or sets the status of the item
+        public string GetPublisher()
         {
-            get { return status; }
-            set { status = value; }
+            return _publisher;
+        }
+        public void SetPublisher(string publisher)
+        {
+            _publisher = publisher;
         }
 
-        // Methods
-        public abstract string GetDescription(); // Returns a string with information about the item. Must be implemented by subclasses.
-        public abstract void Borrow(); // Changes the status of the item to false. Must be implemented by subclasses.
-        public abstract void Return(); // Changes the status of the item to true. Must be implemented by subclasses.
+        public int GetYear()
+        {
+            return _year;
+        }
+        public void SetYear(int year)
+        {
+            _year = year;
+        }
+
+        public abstract string GetDescription();
+        public abstract void Borrow();
+        public abstract void Return();
     }
 }

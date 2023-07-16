@@ -1,93 +1,112 @@
 using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace LibraryManagementSystem
-{
-    // A class that represents the main program
-    public class Program
-    {
-        // A static field that stores an instance of the catalog
+namespace LibraryManagementSystem {
+    public class Program {
         private static Catalog catalog;
 
-        // A static method that creates and returns an instance of the catalog
-        private static Catalog CreateCatalog()
-        {
-            Catalog catalog = new Catalog(); // Create a new catalog
-            catalog.Items = new List<Item>(); // Create a new list of items
+        private static Catalog CreateCatalog() {
+            Catalog catalog = new Catalog();
+            catalog.SetItems(new List < Item > ());
 
-            // Create some sample items and add them to the catalog
-            Book book1 = new Book();
-            book1.Id = 1;
-            book1.Title = "The Catcher in the Rye";
-            book1.Author = "J.D. Salinger";
-            book1.Isbn = "9780316769488";
-            book1.Status = true;
-            catalog.Items.Add(book1);
+            List < string > lines = File.ReadAllLines("catalog.csv").ToList();
 
-            Book book2 = new Book();
-            book2.Id = 2;
-            book2.Title = "The Hitchhiker's Guide to the Galaxy";
-            book2.Author = "Douglas Adams";
-            book2.Isbn = "9780345391803";
-            book2.Status = true;
-            catalog.Items.Add(book2);
+            foreach(string line in lines) {
+                string[] values = line.Split(',');
+                int id = int.Parse(values[0]);
+                string title = values[1];
+                string author = values[2];
+                string publisher = values[3];
+                int year = int.Parse(values[4]);
+                string type = values[5];
 
-            FictionBook fictionBook1 = new FictionBook();
-            fictionBook1.Id = 3;
-            fictionBook1.Title = "The Lord of the Rings";
-            fictionBook1.Author = "J.R.R. Tolkien";
-            fictionBook1.Isbn = "9780618640157";
-            fictionBook1.Genre = "Fantasy";
-            fictionBook1.Status = true;
-            catalog.Items.Add(fictionBook1);
+                switch (type) {
+                case "Book":
+                    Book book = new Book();
+                    book.SetId(id);
+                    book.SetTitle(title);
+                    book.SetAuthor(author);
+                    book.SetPublisher(publisher);
+                    book.SetYear(year);
+                    book.SetStatus(true);
+                    catalog.GetItems().Add(book);
+                    break;
 
-            FictionBook fictionBook2 = new FictionBook();
-            fictionBook2.Id = 4;
-            fictionBook2.Title = "Harry Potter and the Philosopher's Stone";
-            fictionBook2.Author = "J.K. Rowling";
-            fictionBook2.Isbn = "9780747532699";
-            fictionBook2.Genre = "Fantasy";
-            fictionBook2.Status = true;
-            catalog.Items.Add(fictionBook2);
+                case "FictionBook":
+                    FictionBook fictionBook = new FictionBook();
+                    fictionBook.SetId(id);
+                    fictionBook.SetTitle(title);
+                    fictionBook.SetAuthor(author);
+                    fictionBook.SetPublisher(publisher);
+                    fictionBook.SetYear(year);
+                    fictionBook.SetGenre(values[6]);
+                    fictionBook.SetStatus(true);
+                    catalog.GetItems().Add(fictionBook);
+                    break;
 
-            DVD dvd1 = new DVD();
-            dvd1.Id = 5;
-            dvd1.Title = "The Matrix";
-            dvd1.Director = "The Wachowskis";
-            dvd1.Actors = new string[] { "Keanu Reeves", "Laurence Fishburne", "Carrie-Anne Moss" };
-            dvd1.Status = true;
-            catalog.Items.Add(dvd1);
+                case "DVD":
+                    DVD dvd = new DVD();
+                    dvd.SetId(id);
+                    dvd.SetTitle(title);
+                    dvd.SetDirector(author); // The author field is used for director in this case
+                    dvd.SetActors(values[6].Split(';')); // The actors are separated by semicolons in the CSV file
+                    dvd.SetStatus(true);
+                    catalog.GetItems().Add(dvd);
+                    break;
 
-            DVD dvd2 = new DVD();
-            dvd2.Id = 6;
-            dvd2.Title = "The Lion King";
-            dvd2.Director = "Roger Allers and Rob Minkoff";
-            dvd2.Actors = new string[] { "Matthew Broderick", "James Earl Jones", "Jeremy Irons" };
-            dvd2.Status = true;
-            catalog.Items.Add(dvd2);
+                case "Magazine":
+                    Magazine magazine = new Magazine();
+                    magazine.SetId(id);
+                    magazine.SetTitle(title);
+                    magazine.SetIssueNumber(int.Parse(values[6]));
+                    magazine.SetPublicationDate(DateTime.Parse(values[7]));
+                    magazine.SetStatus(true);
+                    catalog.GetItems().Add(magazine);
+                    break;
 
-            Magazine magazine1 = new Magazine();
-            magazine1.Id = 7;
-            magazine1.Title = "National Geographic";
-            magazine1.Issue = 1;
-            magazine1.Year = 2023;
-            magazine1.Status = true;
-            catalog.Items.Add(magazine1);
+                default:
+                    Console.WriteLine("Invalid item type.");
+                    break;
+                }
+            }
 
-            Magazine magazine2 = new Magazine();
-            magazine2.Id = 8;
-            magazine2.Title = "Time";
-            magazine2.Issue = 2;
-            magazine2.Year = 2023;
-            magazine2.Status = true;
-            catalog.Items.Add(magazine2);
-
-            return catalog; // Return the catalog
+            return catalog;
         }
 
-        // A static method that displays the main menu and returns the user's choice
-        private static int DisplayMenu()
-        {
-            Console.WriteLine("Welcome to the Library Management System!");
+        private static string UserMenu() {
+            Console.Clear();
+            Console.WriteLine("Are you a USER or a LIBRARIAN? ");
+            Console.WriteLine("Your answer: ");
+
+            string userRole = Console.ReadLine();
+
+            return userRole;
+        }
+        private static int DisplayLibrarianMenu() {
+            Console.Clear();
+            Console.WriteLine();
+            Console.WriteLine("Welcome, Librarian.");
+            Console.WriteLine("Please choose an option:");
+            Console.WriteLine("1. Add new item");
+            Console.WriteLine("2. Remove an item");
+            Console.WriteLine("3. Add new user");
+            Console.WriteLine("4. Remove an user");
+            Console.WriteLine("5. Exit");
+            Console.WriteLine();
+            Console.Write("Your choice: ");
+            Console.WriteLine();
+
+            int choice = Convert.ToInt32(Console.ReadLine());
+
+            return choice;
+        }
+
+        private static int DisplayUserMenu() {
+            Console.Clear();
+            Console.WriteLine();
+            Console.WriteLine("Welcome, User.");
             Console.WriteLine("Please choose an option:");
             Console.WriteLine("1. Search for an item by title");
             Console.WriteLine("2. Search for an item by author/director");
@@ -95,190 +114,334 @@ namespace LibraryManagementSystem
             Console.WriteLine("4. Borrow an item");
             Console.WriteLine("5. Return an item");
             Console.WriteLine("6. Exit");
+            Console.WriteLine();
             Console.Write("Your choice: ");
-            
-            // Read the user's input and convert it to an integer
+            Console.WriteLine();
+
             int choice = Convert.ToInt32(Console.ReadLine());
-            
-            // Return the user's choice
+
             return choice;
         }
 
-        // A static method that searches for an item by title and displays the result
-        private static void SearchByTitle()
-        {
+        private static void SearchByTitle() {
             Console.Write("Enter the title of the item: ");
-            
-            // Read the user's input
+
             string title = Console.ReadLine();
-            
-            // Call the catalog's SearchByTitle method and store the result in a list
-            List<Item> items = catalog.SearchByTitle(title);
-            
-            // Check if the list is empty or not
-            if (items.Count == 0)
-            {
-                // If the list is empty, display a message that no items were found
+
+            List < Item > items = catalog.GetItems().FindAll(item => item.GetTitle().Equals(title, StringComparison.OrdinalIgnoreCase));
+
+            if (items.Count == 0) {
                 Console.WriteLine("No items were found with that title.");
-            }
-            else
-            {
-                // If the list is not empty, display a message that some items were found
+            } else {
                 Console.WriteLine($"Found {items.Count} item(s) with that title:");
-                
-                // Loop through the list and display each item's details
-                foreach (Item item in items)
-                {
-                    item.DisplayDetails();
+
+                foreach(Item item in items) {
+                    Console.WriteLine(item.GetDescription());
                     Console.WriteLine();
                 }
             }
         }
 
-        // A static method that searches for an item by author/director and displays the result
-        private static void SearchByAuthorDirector()
-        {
+        private static void SearchByAuthorDirector() {
             Console.Write("Enter the name of the author or director: ");
-            
-            // Read the user's input
+
             string name = Console.ReadLine();
-            
-            // Call the catalog's SearchByAuthorDirector method and store the result in a list
-            List<Item> items = catalog.SearchByAuthorDirector(name);
-            
-            // Check if the list is empty or not
-            if (items.Count == 0)
-            {
-                // If the list is empty, display a message that no items were found
+
+            var items = from item in catalog.GetItems()
+            where item.GetAuthor().Equals(name, StringComparison.OrdinalIgnoreCase) ||
+                (item is DVD && (item as DVD).GetDirector().Equals(name, StringComparison.OrdinalIgnoreCase))
+            select item;
+
+            if (items.Count() == 0) {
                 Console.WriteLine("No items were found with that author or director.");
-            }
-            else
-            {
-                // If the list is not empty, display a message that some items were found
-                Console.WriteLine($"Found {items.Count} item(s) with that author or director:");
-                
-                // Loop through the list and display each item's details
-                foreach (Item item in items)
-                {
-                    item.DisplayDetails();
+            } else {
+                Console.WriteLine($"Found {items.Count()} item(s) with that author or director:");
+
+                foreach(Item item in items) {
+                    Console.WriteLine(item.GetDescription());
                     Console.WriteLine();
                 }
             }
         }
 
-        // A static method that displays all items in the catalog
-        private static void DisplayAllItems()
-        {
-            // Call the catalog's DisplayAllItems method
-            catalog.DisplayAllItems();
+        private static void DisplayAllItems() {
+            catalog.DisplayItems();
         }
 
-        // A static method that borrows an item from the catalog
-        private static void BorrowItem()
-        {
-            Console.Write("Enter your name: ");
-            
-            // Read the user's name
+        private static void BorrowItem() {
+            Console.Write("Enter your user name: ");
+
             string userName = Console.ReadLine();
-            
-            Console.Write("Enter your email: ");
-            
-            // Read the user's email
-            string userEmail = Console.ReadLine();
-            
-            Console.Write("Enter the id of the item you want to borrow: ");
-            
-            // Read the user's input and convert it to an integer
-            int itemId = Convert.ToInt32(Console.ReadLine());
-            
-            // Call the catalog's BorrowItem method and store the result in a boolean variable
-            bool success = catalog.BorrowItem(itemId, userName, userEmail);
-            
-            // Check if the operation was successful or not
-            if (success)
-            {
-                // If successful, display a message that the item was borrowed
-                Console.WriteLine("You have successfully borrowed the item.");
+
+            User user = Database.SearchUser(userName);
+
+            if (user == null) {
+
+                Random random = new Random();
+                int id = random.Next(1000, 9999);
+
+                Console.Write("Enter your address: ");
+                string address = Console.ReadLine();
+
+                user = new User();
+                user.SetId(id);
+                user.SetName(userName);
+                user.SetAddress(address);
+
+                Database.AddUser(user);
+
+                Console.WriteLine($"The user {user.GetName()} has been created.");
             }
-            else
-            {
-                // If not successful, display a message that the item was not available or not found
+
+            Console.Write("Enter the id of the item you want to borrow: ");
+
+            string itemId = Console.ReadLine();
+
+            Item item = catalog.SearchItem(itemId);
+
+            bool success = catalog.BorrowItem(item, user);
+
+            if (success) {
+                Database.UpdateItem(item); // Update the status of the item in the CSV file
+                Console.WriteLine("You have successfully borrowed the item.");
+            } else {
                 Console.WriteLine("The item is either not available or not found.");
             }
-        }
 
-        // A static method that returns an item to the catalog
-        private static void ReturnItem()
-        {
-            Console.Write("Enter the id of the item you want to return: ");
-            
-            // Read the user's input and convert it to an integer
-            int itemId = Convert.ToInt32(Console.ReadLine());
-            
-            // Call the catalog's ReturnItem method and store the result in a boolean variable
-            bool success = catalog.ReturnItem(itemId);
-            
-            // Check if the operation was successful or not
-            if (success)
-            {
-                // If successful, display a message that the item was returned
-                Console.WriteLine("You have successfully returned the item.");
-            }
-            else
-            {
-                // If not successful, display a message that the item was not found
-                Console.WriteLine("The item was not found.");
-            }
-        }
+            static void Main(string[] args) {
+                catalog = CreateCatalog();
 
-        // The main method of the program
-        public static void Main(string[] args)
-        {
-            // Create an instance of the catalog and assign it to the static field
-            catalog = CreateCatalog();
-            
-            // Declare a boolean variable to store the exit condition
-            bool exit = false;
-            
-            // Loop until the user chooses to exit
-            while (!exit)
-            {
-                // Display the main menu and get the user's choice
-                int choice = DisplayMenu();
-                
-                // Use a switch statement to execute different actions based on the user's choice
-                switch (choice)
-                {
-                    case 1: // Search by title
-                        SearchByTitle();
-                        break;
-                    case 2: // Search by author/director
-                        SearchByAuthorDirector();
-                        break;
-                    case 3: // Display all items
-                        DisplayAllItems();
-                        break;
-                    case 4: // Borrow an item
-                        BorrowItem();
-                        break;
-                    case 5: // Return an item
-                        ReturnItem();
-                        break;
-                    case 6: // Exit
-                        exit = true; // Set the exit condition to true
-                        Console.WriteLine("Thank you for using the Library Management System!"); // Display a farewell message
-                        break;
-                    default: // Invalid choice
-                        Console.WriteLine("Invalid choice. Please try again."); // Display an error message
-                        break;
-                }
-                
-                // If the user has not chosen to exit, display a blank line and wait for a key press before continuing the loop
-                if (!exit)
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Press any key to continue...");
-                    Console.ReadKey();
+                bool exit = false;
+
+                while (!exit) {
+                    string userRole = UserMenu();
+
+                    if (userRole == "Librarian") {
+
+                        int choice = DisplayLibrarianMenu();
+
+                        switch (choice) {
+                            case 1:
+                                // The code for adding a new item is added
+                                Console.WriteLine("What type of item do you want to add?");
+                                Console.WriteLine("1. Book");
+                                Console.WriteLine("2. Fiction book");
+                                Console.WriteLine("3. Magazine");
+                                Console.WriteLine("4. DVD");
+
+                                int type = int.Parse(Console.ReadLine());
+
+                                switch (type) {
+                                    case 1:
+                                        Random randomIdBook = new Random();
+                                        int bookId = randomIdBook.Next(1000, 9999);
+
+                                        Console.Write("Enter the title of the book: ");
+                                        string title = Console.ReadLine();
+                                        Console.Write("Enter the author of the book: ");
+                                        string author = Console.ReadLine();
+                                        Console.Write("Enter the publisher of the book: ");
+                                        string publisher = Console.ReadLine();
+                                        Console.Write("Enter the year of publication of the book: ");
+                                        int year = int.Parse(Console.ReadLine());
+
+                                        Book book = new Book();
+                                        book.SetId(bookId);
+                                        book.SetTitle(title);
+                                        book.SetAuthor(author);
+                                        book.SetPublisher(publisher);
+                                        book.SetYear(year);
+                                        book.SetStatus(true);
+                                        Database.AddItem(book);
+
+                                        break;
+                                    case 2:
+                                        Random randomIdFic = new Random();
+                                        int ficId = randomIdFic.Next(1000, 9999);
+
+                                        Console.Write("Enter the title of the fiction book: ");
+                                        string ficTitle = Console.ReadLine();
+                                        Console.Write("Enter the author of the fiction book: ");
+                                        string ficAuthor = Console.ReadLine();
+                                        Console.Write("Enter the publisher of the fiction book: ");
+                                        string ficPublisher = Console.ReadLine();
+                                        Console.Write("Enter the year of publication of the fiction book: ");
+                                        int ficYear = int.Parse(Console.ReadLine());
+                                        Console.Write("Enter the genre of the fiction book: ");
+                                        string genre = Console.ReadLine();
+
+                                        FictionBook fictionBook = new FictionBook();
+                                        fictionBook.SetId(ficId);
+                                        fictionBook.SetTitle(ficTitle);
+                                        fictionBook.SetAuthor(ficAuthor);
+                                        fictionBook.SetPublisher(ficPublisher);
+                                        fictionBook.SetYear(ficYear);
+                                        fictionBook.SetGenre(genre);
+                                        fictionBook.SetStatus(true);
+                                        Database.AddItem(fictionBook);
+
+                                        break;
+
+                                    case 3:
+                                        Random randomIdMag = new Random();
+                                        int magId = randomIdMag.Next(1000, 9999);
+
+                                        Console.Write("Enter the title of the magazine: ");
+                                        string magTitle = Console.ReadLine();
+                                        Console.Write("Enter the issue number of the magazine: ");
+                                        int issueNumber = int.Parse(Console.ReadLine());
+                                        Console.Write("Enter the publication date of the magazine (yyyy/mm/dd): ");
+                                        DateTime publicationDate = DateTime.Parse(Console.ReadLine());
+
+                                        Magazine magazine = new Magazine();
+                                        magazine.SetId(magId);
+                                        magazine.SetTitle(magTitle);
+                                        magazine.SetIssueNumber(issueNumber);
+                                        magazine.SetPublicationDate(publicationDate);
+                                        magazine.SetStatus(true);
+                                        Database.AddItem(magazine);
+
+                                        break;
+                                    
+                                    case 4:
+                                        Random randomIdDvd = new Random();
+                                        int dvdId = randomIdDvd.Next(1000, 9999);
+
+                                        Console.Write("Enter the title of the DVD: ");
+                                        string dvdTitle = Console.ReadLine();
+                                        Console.Write("Enter the director of the DVD: ");
+                                        string director = Console.ReadLine();
+
+                                        Console.Write("Enter the number of actors in the DVD: ");
+                                        int numberOfActors = int.Parse(Console.ReadLine());
+                                        string[] actors = new string[numberOfActors];
+
+                                        for (int i = 0; i < numberOfActors; i++) {
+                                            Console.Write($"Enter the name of actor {i + 1}: ");
+
+                                            actors[i] = Console.ReadLine();
+                                        }
+
+                                        DVD dvd = new DVD();
+                                        dvd.SetId(dvdId);
+                                        dvd.SetTitle(dvdTitle);
+                                        dvd.SetDirector(director);
+                                        dvd.SetActors(actors);
+                                        dvd.SetStatus(true);
+                                        Database.AddItem(dvd);
+
+                                        break;
+
+                                        default:
+
+                                        Console.WriteLine("Invalid type. Please enter a valid number.");
+
+                                        break;
+
+                                        default:
+
+                                        Console.WriteLine("Invalid type. Please enter a valid number.");
+                                        
+                                        break;
+                                    
+                                }
+
+                                break;
+                            case 2:
+                            // Remove an item
+                            break;
+
+                            case 3:
+                            // Add new user
+
+                            Random random = new Random();
+                            int id = random.Next(1000, 9999);
+
+                            Console.Write("Enter the name of the user: ");
+                            string name = Console.ReadLine();
+
+                            Console.Write("Enter the address of the user: ");
+                            string address = Console.ReadLine();
+
+                            User user = new User();
+                            user.SetId(id);
+                            user.SetName(name);
+                            user.SetAddress(address);
+                            Database.AddUser(user);
+
+                            Console.WriteLine($"The user {user.GetName()} has been created.");
+
+                            break;
+
+                            case 4:
+                            // Remove a user
+                            break;
+
+                            case 5:
+
+                            exit = true;
+                            Console.WriteLine("Thank you for using the Library Management System!");
+                            break;
+
+                            default:
+
+                            Console.WriteLine("Invalid choice. Please try again.");
+                            break;
+                            }
+                            } else if (userRole == "User") {
+
+                            } else {
+
+                            }
+
+                            if (!exit) {
+                            Console.WriteLine();
+                            Console.WriteLine("Press any key to continue...");
+                            Console.ReadKey();
+}
+
+
+                    } else if (userRole == "User") {
+
+                        int choice = DisplayUserMenu();
+
+                        switch (choice) {
+                        case 1:
+                            SearchByTitle();
+                            break;
+                        case 2:
+                            SearchByAuthorDirector();
+                            break;
+                        case 3:
+                            DisplayAllItems();
+                            break;
+                        case 4:
+                            BorrowItem();
+                            break;
+                        case 5:
+                            ReturnItem();
+                            break;
+                        case 6:
+                            exit = true;
+                            Console.WriteLine("Thank you for using the Library Management System!");
+                            break;
+                        default:
+                            Console.WriteLine("Invalid choice. Please try again.");
+                            break;
+                        default:
+                            Console.WriteLine("Invalid choice. Please try again.");
+                            break;
+                        }
+                    } else {
+
+                        Console.WriteLine("Invalid user role. Please enter either User or Librarian.");
+                    }
+
+                    if (!exit) {
+                        Console.WriteLine();
+                        Console.WriteLine("Press any key to continue...");
+                        Console.ReadKey();
+                    }
                 }
             }
         }

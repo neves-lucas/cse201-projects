@@ -1,47 +1,78 @@
 using System;
+using System.IO;
+using System.Collections.Generic;
 
 namespace LibraryManagementSystem
 {
-    // A class that represents a librarian of the library
     public class Librarian : User
     {
-        // Fields
-        private string password; // The password of the librarian
-        private string role; // The role of the librarian (such as manager, assistant, etc.)
+        private string _password;
+        private string _role;
 
-        // Properties
-        public string Password // Gets or sets the password of the librarian
+        public string GetPassword()
         {
-            get { return password; }
-            set { password = value; }
+            return _password;
+        }
+        public void SetPassword(string password)
+        {
+            _password = password;
+        }
+        public string GetRole()
+        {
+            return _role;
+        }
+        public void SetRole(string role)
+        {
+            _role = role;
         }
 
-        public string Role // Gets or sets the role of the librarian
+        public new string ToString()
         {
-            get { return role; }
-            set { role = value; }
+            return $"Librarian: {GetId()}\nName: {GetName()}\nAddress: {GetAddress()}\nPassword: {GetPassword()}\nRole: {GetRole()}";
         }
 
-        // Methods
-        public new string ToString() // Returns a string with information about 
-                                          // the librarian's ID, name, address, password, role, etc.
+        public void AddItem(Item item)
         {
-            return $"Librarian: {Id}\nName: {Name}\nAddress: {Address}\nPassword: {Password}\nRole: {Role}";
+            Database.AddItem(item);
+            Console.WriteLine($"The item {item.GetTitle()} has been added to the catalog.");
         }
 
-        public void AddItem(Item item) // Adds an item to the catalog
+        public void RemoveItem(Item item)
         {
-            // TODO: Add some logic to add an item to the catalog and print a message to confirm the addition.
+            Database.RemoveItem(item);
+            Console.WriteLine($"The item {item.GetTitle()} has been removed from the catalog.");
         }
 
-        public void RemoveItem(Item item) // Removes an item from the catalog
+        public void ManageUser(User user)
         {
-            // TODO: Add some logic to remove an item from the catalog and print a message to confirm the removal.
-        }
+            Console.WriteLine("What do you want to do with this user?");
+            Console.WriteLine("1. Create");
+            Console.WriteLine("2. Update");
+            Console.WriteLine("3. Delete");
+            
+            int action = int.Parse(Console.ReadLine());
 
-        public void ManageUser(User user) // Performs some actions on a user, such as creating, updating, deleting, etc.
-        {
-            // TODO: Add some logic to perform some actions on a user and print a message to confirm the action.
+            switch (action)
+            {
+                case 1:
+                    Database.AddUser(user);
+                    Console.WriteLine($"The user {user.GetName()} has been created.");
+                    break;
+
+                case 2:
+                    Database.UpdateUser(user);
+                    Console.WriteLine($"The user {user.GetName()} has been updated.");
+                    break;
+
+                case 3:
+                    Database.RemoveUser(user);
+                    Console.WriteLine($"The user {user.GetName()} has been deleted.");
+                    break;
+
+                default:
+                    Console.WriteLine("Invalid action. Please enter a valid number.");
+                    break;
+            }
         }
     }
 }

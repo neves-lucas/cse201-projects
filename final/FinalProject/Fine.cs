@@ -2,45 +2,49 @@ using System;
 
 namespace LibraryManagementSystem
 {
-    // A class that represents a fine imposed on a user in the library
     public class Fine
     {
         // Fields
-        private int id; // The ID of the fine
-        private int userId; // The ID of the user who is fined
-        private decimal amount; // The amount of the fine in currency units
-        private string reason; // The reason of the fine (such as late return, damage, etc.)
+        private int _id;
+        private int _userId;
+        private decimal _amount;
+        private string _reason;
 
-        // Properties
-        public int Id // Gets or sets the ID of the fine
+        public int GetId()
         {
-            get { return id; }
-            set { id = value; }
+            return _id;
         }
-
-        public int UserId // Gets or sets the ID of the user who is fined
+        public void SetId(int id)
         {
-            get { return userId; }
-            set { userId = value; }
+            _id = id;
         }
-
-        public decimal Amount // Gets or sets the amount of the fine in currency units
+        public int GetUserId()
         {
-            get { return amount; }
-            set { amount = value; }
+            return _userId;
         }
-
-        public string Reason // Gets or sets the reason of the fine (such as late return, damage, etc.)
+        public void SetUserId(int userId)
         {
-            get { return reason; }
-            set { reason = value; }
+            _userId = userId;
         }
-
-        // Methods
-        public new string ToString() // Returns a string with information about 
-                                 // the fine's ID, user ID, amount, reason, etc.
+        public decimal GetAmount()
         {
-            return $"Fine: {Id}\nUser ID: {UserId}\nAmount: {Amount}\nReason: {Reason}";
+            return _amount;
+        }
+        public void SetAmount(decimal amount)
+        {
+            _amount = amount;
+        }
+        public string GetReason()
+        {
+            return _reason;
+        }
+        public void SetReason(string reason)
+        {
+            _reason = reason;
+        }
+        public new string ToString()
+        {
+            return $"Fine: {GetId()}\nUser ID: {GetUserId()}\nAmount: {GetAmount()}\nReason: {GetReason()}";
         }
     }
 }

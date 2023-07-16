@@ -2,37 +2,34 @@ using System;
 
 namespace LibraryManagementSystem
 {
-    // A class that represents a fiction book in the library
     public class FictionBook : Book
     {
-        // Fields
-        private string genre; // The genre of the fiction book
-
-        // Properties
-        public string Genre // Gets or sets the genre of the fiction book
-        {
-            get { return genre; }
-            set { genre = value; }
-        }
+        private string _genre;
 
         // Methods
-        public override string GetDescription() // Returns a string with information about the fiction book's title, author, ISBN, genre, etc.
+        public string GetGenre()
         {
-            return $"Fiction Book: {Title}\nAuthor: {Author}\nISBN: {Isbn}\nGenre: {Genre}\nStatus: {(Status ? "Available" : "Borrowed")}";
+            return _genre;
+        }
+        public void SetGenre(string genre)
+        {
+            _genre = genre;
+        }
+        public override string GetDescription()
+        {
+            return $"Fiction Book: {GetTitle()}\nAuthor: {GetAuthor()}\nISBN: {GetIsbn()}\nGenre: {GetGenre()}\nStatus: {(GetStatus() ? "Available" : "Borrowed")}";
         }
 
-        public override void Borrow() // Calls the base class method and prints a message to recommend other books of the same genre.
+        public override void Borrow()
         {
             base.Borrow();
-            Console.WriteLine($"If you like {Genre}, you may also enjoy these books:");
-            // TODO: Add some logic to display other books of the same genre from the catalog.
+            Console.WriteLine($"If you like {GetGenre()}, you may also enjoy these books:");
         }
 
-        public override void Return() // Calls the base class method and prints a message to ask for feedback on the book.
+        public override void Return()
         {
             base.Return();
-            Console.WriteLine($"How did you like {Title} by {Author}?");
-            // TODO: Add some logic to collect and store the feedback from the user.
+            Console.WriteLine($"How did you like {GetTitle()} by {GetAuthor()}?");
         }
     }
 }
