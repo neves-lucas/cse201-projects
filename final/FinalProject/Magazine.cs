@@ -5,7 +5,7 @@ namespace LibraryManagementSystem
     public class Magazine : Item
     {
         private int _issueNumber;
-        private DateTime _publicationDate;
+        private string _publicationDate;
 
         public int GetIssueNumber()
         {
@@ -15,18 +15,18 @@ namespace LibraryManagementSystem
         {
             _issueNumber = issueNumber;
         }
-        public DateTime GetPublicationDate()
+        public string GetPublicationDate()
         {
             return _publicationDate;
         }
-        public void SetPublicationDate(DateTime publicationDate)
+        public void SetPublicationDate(string publicationDate)
         {
             _publicationDate = publicationDate;
         }
 
         public override string GetDescription()
         {
-            return $"Magazine: {GetTitle()}\nIssue Number: {GetIssueNumber()}\nPublication Date: {GetPublicationDate().ToShortDateString()}\nStatus: {(GetStatus() ? "Available" : "Borrowed")}";
+            return $"Magazine: {GetTitle()}\nIssue Number: {GetIssueNumber()}\nPublication Date: {GetPublicationDate()}\nStatus: {(GetStatus() ? "Available" : "Borrowed")}";
         }
 
         public override void Borrow()

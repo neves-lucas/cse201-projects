@@ -7,9 +7,7 @@ namespace LibraryManagementSystem
         private int _id;
         private string _title;
         private bool _status;
-        private string _author;
-        private string _publisher;
-        private int _year;
+        private string _type;
 
         public int GetId()
         {
@@ -35,32 +33,13 @@ namespace LibraryManagementSystem
         {
             _status = status;
         }
-
-        public string GetAuthor()
+        public string GetType()
         {
-            return _author;
+            return _type;
         }
-        public void SetAuthor(string author)
+        public void SetType(string type)
         {
-            _author = author;
-        }
-
-        public string GetPublisher()
-        {
-            return _publisher;
-        }
-        public void SetPublisher(string publisher)
-        {
-            _publisher = publisher;
-        }
-
-        public int GetYear()
-        {
-            return _year;
-        }
-        public void SetYear(int year)
-        {
-            _year = year;
+            _type = type;
         }
 
         public abstract string GetDescription();

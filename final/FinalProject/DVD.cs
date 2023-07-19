@@ -5,7 +5,7 @@ namespace LibraryManagementSystem
     public class DVD : Item
     {
         private string _director;
-        private string[] _actors;
+        private string _actors;
 
         // Methods
         public string GetDirector()
@@ -16,11 +16,11 @@ namespace LibraryManagementSystem
         {
             _director = director;
         }
-        public string[] GetActors()
+        public string GetActors()
         {
             return _actors;
         }
-        public void SetActors(string[] actors)
+        public void SetActors(string actors)
         {
             _actors = actors;
         }
@@ -28,7 +28,7 @@ namespace LibraryManagementSystem
         public override string GetDescription()
 
         {
-            return $"DVD: {GetTitle()}\nDirector: {GetDirector()}\nActors: {string.Join(", ", GetActors())}\nStatus: {(GetStatus() ? "Available" : "Borrowed")}";
+            return $"DVD: {GetTitle()}\nDirector: {GetDirector()}\nActors: {GetActors()}\nStatus: {(GetStatus() ? "Available" : "Borrowed")}";
         }
 
         public override void Borrow()
